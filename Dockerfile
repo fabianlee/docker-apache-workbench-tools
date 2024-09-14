@@ -34,5 +34,14 @@ RUN cp support/ab.c support/ab.c.old &&\
  make &&\
  cp support/ab /usr/sbin/ab
 
+# standard Docker arguments
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+# custom build arguments
+ARG BUILD_TIME
+ARG GITREF
+# persist these build time arguments into container as debug
+RUN echo "[$BUILD_TIME] [$GITREF] building on host that is $BUILDPLATFORM, for the target architecture $TARGETPLATFORM" > /build.log
+
 ENTRYPOINT ["/usr/sbin/ab"]
 

@@ -21,7 +21,7 @@ spec:
 
       containers:
       - name: apache-workbench-tools
-        image: ghcr.io/fabianlee/google-hello-app-logging-multiarch:latest
+        image: ghcr.io/fabianlee/docker-apache-workbench-tools:latest
 
         # resource limits
         resources:

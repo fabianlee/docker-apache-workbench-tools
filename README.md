@@ -8,7 +8,7 @@ Image is based on alpine.
 The github pipeline takes care of the multi-arch build, and publishes the image to the Github Container Registry.
 
 ```
-docker pull ghcr.io/fabianlee/apache-workbench-tools.yaml:latest
+docker pull ghcr.io/fabianlee/docker-apache-workbench-tools:latest
 ```
 
 ## Creating tag that invokes Github Action
