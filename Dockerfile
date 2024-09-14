@@ -43,5 +43,5 @@ ARG GITREF
 # persist these build time arguments into container as debug
 RUN echo "[$BUILD_TIME] [$GITREF] building on host that is $BUILDPLATFORM, for the target architecture $TARGETPLATFORM" > /build.log
 
-ENTRYPOINT ["/usr/sbin/ab"]
+#ENTRYPOINT ["/usr/sbin/ab"]
 

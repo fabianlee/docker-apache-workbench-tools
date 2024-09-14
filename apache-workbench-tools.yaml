@@ -22,6 +22,11 @@ spec:
       containers:
       - name: apache-workbench-tools
         image: ghcr.io/fabianlee/docker-apache-workbench-tools:latest
+        #command: ["/bin/sh"]
+        args:
+        - /bin/sh
+        - -c
+        - touch /tmp/healthy; date; echo "starting..."; sleep 30d
 
         # resource limits
         resources:
@@ -32,20 +37,22 @@ spec:
             memory: "16Mi"
             cpu: "1000m" # whole vcpu
 
+        # any environment variables
         env:
 
         livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8080
-          initialDelaySeconds: 3
-          periodSeconds: 20
-
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          initialDelaySeconds: 5
+          periodSeconds: 5
         readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 8080
-          initialDelaySeconds: 3
-          periodSeconds: 20
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          initialDelaySeconds: 5
+          periodSeconds: 5
 
       restartPolicy: Always

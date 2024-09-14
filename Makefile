@@ -32,7 +32,7 @@ clean:
 
 ## runs container in foreground, testing a couple of override values
 docker-run-fg: docker-stop
-	$(DOCKERCMD) run -it --network host $(CAPS) -p $(EXPOSEDPORT) $(VOL_FLAG) --rm $(OPV)
+	$(DOCKERCMD) run -it --network host $(CAPS) $(VOL_FLAG) --rm $(OPV) /bin/sh
 
 ## runs container in foreground, override entrypoint to use use shell
 docker-debug:
@@ -40,10 +40,11 @@ docker-debug:
 
 ## run container in background, override /etc/chrony/chrony.conf using volume (not mandatory)
 docker-run-bg: docker-stop
-	$(DOCKERCMD) run -d --network host $(CAPS) -p $(EXPOSEDPORT) $(VOL_FLAG) --rm --name $(PROJECT) $(OPV)
+	$(DOCKERCMD) run -d --network host $(CAPS) $(VOL_FLAG) --rm --name $(PROJECT) $(OPV) /bin/sh -c 'cat /build.log; while [ 1 ]; do echo "sleeping for 10..";sleep 10; done'
+	$(DOCKERCMD) ps
 
 ## get into console of container running in background
-docker-cli-bg: docker-stop
+docker-cli-bg:
 	$(DOCKERCMD) exec -it $(PROJECT) /bin/sh
 
 ## tails $(DOCKERCMD)logs
@@ -60,12 +61,10 @@ docker-push:
 
 ## pushes to kubernetes cluster
 k8s-apply:
-	sed -e 's/1.0.0/$(VERSION)/' k8s-chrony-alpine.yaml | kubectl apply -f -
-	@echo ""
-	@echo "Use this debian slim container as a test client: https://github.com/fabianlee/docker-debian-bullseye-slim-ntpclient/blob/main/k8s-debian-slim.yaml"
+	kubectl apply -f apache-workbench-tools.yaml
 
 k8s-delete:
-	kubectl delete -f k8s-chrony-alpine.yaml
+	kubectl delete -f apache-workbench-tools.yaml
 
 ## scan for vulnerabilities
 ## (install first) https://aquasecurity.github.io/trivy
