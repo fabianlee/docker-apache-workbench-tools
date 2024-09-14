@@ -22,7 +22,6 @@ spec:
       containers:
       - name: apache-workbench-tools
         image: ghcr.io/fabianlee/docker-apache-workbench-tools:latest
-        #command: ["/bin/sh"]
         args:
         - /bin/sh
         - -c
