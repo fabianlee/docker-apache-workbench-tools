@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-workbench-tools
+  # allow for override: kubectl -n <ns> apply ...
+  #namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: apache-workbench-tools
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: apache-workbench-tools
+      annotations:
+        sidecar.istio.io/inject: "false"
+
+    spec:
+
+      containers:
+      - name: apache-workbench-tools
+        image: ghcr.io/fabianlee/google-hello-app-logging-multiarch:latest
+
+        # resource limits
+        resources:
+          requests:
+            memory: "8Mi"
+            cpu: "500m" # half a vcpu
+          limits:
+            memory: "16Mi"
+            cpu: "1000m" # whole vcpu
+
+        env:
+
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 20
+
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 20
+
+      restartPolicy: Always
