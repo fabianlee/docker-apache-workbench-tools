@@ -31,10 +31,10 @@ spec:
         resources:
           requests:
             memory: "8Mi"
-            cpu: "500m" # half a vcpu
+            cpu: "100m" # half a vcpu
           limits:
             memory: "16Mi"
-            cpu: "1000m" # whole vcpu
+            cpu: "500m" # whole vcpu
 
         # any environment variables
         env:
